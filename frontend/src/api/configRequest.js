@@ -21,5 +21,13 @@ export const getActiveNotesByCategoryName = (categoryName) => {
 }
 
 export const getArchiveNotesByCategoryName = (categoryName) => {
-  return axios.get(`http://localhost:8080/notes/filter-by-category/active/${categoryName}`)
+  return axios.get(`http://localhost:8080/notes/filter-by-category/active/${categoryName}`, {
+    params: {
+      isArchived: "true"
+    }
+  })
+}
+
+export const changeStatus = (id) => {
+  return axios.post(`localhost:8080/notes/change-status/${id}`);
 }

@@ -44,11 +44,11 @@ public class NoteController {
     return ResponseEntity.ok(categoryService.findAll());
   }
 
-  @GetMapping("/filter-by-category/active/{categoryName}")
+  @GetMapping("/filter-by-category/{categoryName}")
   public ResponseEntity<List<NoteDTO>> getActiveNotesByCategory(
       @PathVariable("categoryName") String categoryName,
-      @RequestParam(required = false, defaultValue = "false") boolean isRequired) {
-    return ResponseEntity.ok(noteService.filterNotesByCategoryName(categoryName, isRequired));
+      @RequestParam(required = false, defaultValue = "false") boolean isArchived) {
+    return ResponseEntity.ok(noteService.filterNotesByCategoryName(categoryName, isArchived));
   }
 
   @GetMapping("/{id}")

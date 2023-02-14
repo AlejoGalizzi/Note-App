@@ -16,7 +16,7 @@ import {
 import { Box, Container } from "@mui/system";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 
-const NotesList = ({notes, categories, handleChange, currentCategory, renderActions}) => {
+const NotesList = ({notes, title, categories, handleChange, currentCategory, renderActions}) => {
 
   const renderNotes = () => {
     if (notes.length === 0) {
@@ -50,7 +50,7 @@ const NotesList = ({notes, categories, handleChange, currentCategory, renderActi
                 {`Last updated: ${note.updatedAt}`}
               </Typography>
               <Box display="flex" justifyContent="flex-end">
-                {renderActions()}
+                {renderActions(note.id)}
               </Box>
             </CardContent>
           </Card>
@@ -73,7 +73,7 @@ const NotesList = ({notes, categories, handleChange, currentCategory, renderActi
         <AppBar position="static">
           <Toolbar>
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-              Active Notes
+              {title}
             </Typography>
             <Link to="/">
               <Button

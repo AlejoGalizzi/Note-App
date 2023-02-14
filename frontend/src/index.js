@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 
 import ActiveNotes from './components/activeNotes/ActiveNotes';
 import Home from './components/home/Home';
+import ArchivedNotes from './components/archivedNotes/ArchivedNotes';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -13,6 +14,7 @@ root.render(
     <Routes>
       <Route path='/' element={<Home/>}></Route>
       <Route path='/activeNotes' element={<ActiveNotes/>}></Route>
+      <Route path='/archiveNotes' element={<ArchivedNotes/>}></Route>
     </Routes>
     </BrowserRouter>
 );

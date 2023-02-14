@@ -4,30 +4,37 @@ import NotesList from "../notesList/NotesList";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
+import RestoreIcon from '@mui/icons-material/Restore';
 import {
   getCategories,
-  getActiveNotes,
-  getActiveNotesByCategoryName,
+  getArchiveNotes,
+  getArchiveNotesByCategoryName,
+  changeStatus,
 } from "../../api/configRequest";
 
-const ActiveNotes = () => {
+const ArchivedNotes = () => {
   const [notes, setNotes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("All");
 
   useEffect(() => {
-    getActiveNotes().then((response) => {
+    getArchiveNotes().then((response) => {
       setNotes(response.data);
     });
     getCategories().then((response) => {
       setCategories(response.data);
     });
   }, []);
-  const renderActions = () => {
+
+  const onHandleRestore = (id) => {
+    changeStatus(id);
+  }
+
+  const renderActions = (id) => {
     return (
       <CardActions>
-        <IconButton>
-          <Inventory2RoundedIcon fontSize="large" />
+        <IconButton action={() => onHandleRestore(id)}>
+          <RestoreIcon fontSize="large" />
         </IconButton>
         <IconButton>
           <EditRoundedIcon fontSize="large" />
@@ -41,11 +48,11 @@ const ActiveNotes = () => {
 
   useEffect(() => {
     if (currentCategory !== "All") {
-      getActiveNotesByCategoryName(currentCategory).then((response) => {
+      getArchiveNotesByCategoryName(currentCategory).then((response) => {
         setNotes(response.data);
       });
     } else
-      getActiveNotes().then((response) => {
+      getArchiveNotes().then((response) => {
         setNotes(response.data);
       });
   }, [currentCategory]);
@@ -56,7 +63,7 @@ const ActiveNotes = () => {
 
   return (
     <NotesList
-      title="Active Notes"
+      title="Archive Notes"
       notes={notes}
       categories={categories}
       handleChange={handleChange}
@@ -66,4 +73,4 @@ const ActiveNotes = () => {
   );
 };
 
-export default ActiveNotes;
+export default ArchivedNotes;

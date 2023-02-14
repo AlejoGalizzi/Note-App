@@ -10,7 +10,7 @@ const Home = () => {
             <Link to="/activeNotes">Active Notes</Link>
           </li>
           <li>
-            <Link to="/contact">Contact</Link>
+            <Link to="/archiveNotes">Archive Notes</Link>
           </li>
         </ul>
       </nav>
