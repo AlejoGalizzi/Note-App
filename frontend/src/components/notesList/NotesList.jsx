@@ -28,12 +28,14 @@ const NotesList = ({
   currentCategory,
   renderActions,
   linkObject = () => {},
+  setOpenAddNote = () => {},
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
   const handleClose = () => {
     setAnchorEl(null);
   };
@@ -80,7 +82,7 @@ const NotesList = ({
                 {`Last updated: ${note.updatedAt}`}
               </Typography>
               <Box display="flex" justifyContent="flex-end">
-                {renderActions(note.id)}
+                {renderActions(note)}
               </Box>
             </CardContent>
           </Card>
@@ -105,6 +107,9 @@ const NotesList = ({
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
+            {title !== "Active Notes" ? null : 
+              <Button onClick={() => setOpenAddNote(true)} variant="contained">Add note</Button>
+            }
             <Button
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
@@ -115,6 +120,7 @@ const NotesList = ({
             >
               <DensityMediumIcon color="white" />
             </Button>
+
             <Menu
               id="basic-menu"
               anchorEl={anchorEl}
@@ -124,35 +130,23 @@ const NotesList = ({
                 "aria-labelledby": "basic-button",
               }}
             >
-              <MenuItem><Link to="/">
-              <Button
-                id="fade-button"
-                aria-controls={true ? "fade-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={true ? "true" : undefined}
-                onClick={() => {}}
-              >
-                <Typography variant="p" component="p" color="black">
-                  HOME
-                </Typography>
-              </Button>
-            </Link></MenuItem>
-            <MenuItem>{linkObject()}</MenuItem>
+              <MenuItem>
+                <Link to="/">
+                  <Button
+                    id="fade-button"
+                    aria-controls={true ? "fade-menu" : undefined}
+                    aria-haspopup="true"
+                    aria-expanded={true ? "true" : undefined}
+                    onClick={() => {}}
+                  >
+                    <Typography variant="p" component="p" color="black">
+                      HOME
+                    </Typography>
+                  </Button>
+                </Link>
+              </MenuItem>
+              <MenuItem>{linkObject()}</MenuItem>
             </Menu>
-            {/* {linkObject()}
-            <Link to="/">
-              <Button
-                id="fade-button"
-                aria-controls={true ? "fade-menu" : undefined}
-                aria-haspopup="true"
-                aria-expanded={true ? "true" : undefined}
-                onClick={() => {}}
-              >
-                <Typography variant="h6" component="p" color="white">
-                  HOME
-                </Typography>
-              </Button>
-            </Link> */}
           </Toolbar>
         </AppBar>
       </Box>

@@ -52,7 +52,7 @@ const ArchivedNotes = () => {
       .catch((error) => console.log(error.message));
   };
 
-  const renderActions = (id) => {
+  const renderActions = ({id}) => {
     return (
       <CardActions>
         <IconButton onClick={() => onHandleRestore(id)}>
