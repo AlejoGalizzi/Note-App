@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CardActions, IconButton } from "@mui/material";
+import { Button, CardActions, IconButton, Typography } from "@mui/material";
 import NotesList from "../notesList/NotesList";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
@@ -8,25 +8,55 @@ import {
   getCategories,
   getActiveNotes,
   getActiveNotesByCategoryName,
+  changeStatus,
 } from "../../api/configRequest";
+import { Link } from "react-router-dom";
 
 const ActiveNotes = () => {
   const [notes, setNotes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("All");
 
-  useEffect(() => {
+  // const fontSize = Math.min(10, 10 - ('Go to archive notes'.length - 10) / 10);
+  const style = { whiteSpace: 'normal', wordWrap: 'break-word'}
+
+  const linkObject = () => {
+    return (
+      <Link to="/archiveNotes">
+        <Button
+          id="fade-button"
+          aria-controls={true ? "fade-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={true ? "true" : undefined}
+          onClick={() => {}}
+        >
+          <Typography variant="subtitle1" noWrap style={{fontSize: '0.9em', ...style}}  color="black">Go to archive notes</Typography>
+        </Button>
+      </Link>
+    );
+  };
+
+  const renderNotesAPI = () => {
     getActiveNotes().then((response) => {
       setNotes(response.data);
     });
+  }
+
+  useEffect(() => {
+    renderNotesAPI();
     getCategories().then((response) => {
       setCategories(response.data);
     });
   }, []);
-  const renderActions = () => {
+
+  const onHandleArchive = (id) => {
+    changeStatus(id).then(() => renderNotesAPI()).catch(error => console.log(error.message));
+  }
+
+  const renderActions = (id) => {
     return (
       <CardActions>
-        <IconButton>
+        <IconButton onClick={() => onHandleArchive(id)}>
           <Inventory2RoundedIcon fontSize="large" />
         </IconButton>
         <IconButton>
@@ -62,6 +92,7 @@ const ActiveNotes = () => {
       handleChange={handleChange}
       currentCategory={currentCategory}
       renderActions={renderActions}
+      linkObject={linkObject}
     />
   );
 };

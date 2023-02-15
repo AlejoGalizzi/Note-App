@@ -1,39 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { CardActions, IconButton } from "@mui/material";
+import { Button, CardActions, IconButton, Typography } from "@mui/material";
 import NotesList from "../notesList/NotesList";
-import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
 import EditRoundedIcon from "@mui/icons-material/EditRounded";
-import RestoreIcon from '@mui/icons-material/Restore';
+import RestoreIcon from "@mui/icons-material/Restore";
 import {
   getCategories,
   getArchiveNotes,
   getArchiveNotesByCategoryName,
   changeStatus,
 } from "../../api/configRequest";
+import { Link } from "react-router-dom";
 
 const ArchivedNotes = () => {
   const [notes, setNotes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("All");
 
-  useEffect(() => {
+  const linkObject = () => {
+    return (
+      <Link to="/activeNotes">
+        <Button
+          id="fade-button"
+          aria-controls={true ? "fade-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={true ? "true" : undefined}
+          onClick={() => {}}
+        >
+          <Typography variant="span" component="p" color="black">Return to active notes</Typography>
+        </Button>
+      </Link>
+    );
+  };
+
+  const renderNotesAPI = () => {
     getArchiveNotes().then((response) => {
       setNotes(response.data);
     });
+  };
+
+  useEffect(() => {
+    renderNotesAPI();
     getCategories().then((response) => {
       setCategories(response.data);
     });
   }, []);
 
   const onHandleRestore = (id) => {
-    changeStatus(id);
-  }
+    changeStatus(id)
+      .then(() => renderNotesAPI())
+      .catch((error) => console.log(error.message));
+  };
 
   const renderActions = (id) => {
     return (
       <CardActions>
-        <IconButton action={() => onHandleRestore(id)}>
+        <IconButton onClick={() => onHandleRestore(id)}>
           <RestoreIcon fontSize="large" />
         </IconButton>
         <IconButton>
@@ -69,6 +91,7 @@ const ArchivedNotes = () => {
       handleChange={handleChange}
       currentCategory={currentCategory}
       renderActions={renderActions}
+      linkObject={linkObject}
     />
   );
 };

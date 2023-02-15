@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AppBar,
@@ -7,7 +7,9 @@ import {
   CardContent,
   FormControl,
   Grid,
+  Icon,
   InputLabel,
+  Menu,
   MenuItem,
   Select,
   Toolbar,
@@ -15,17 +17,45 @@ import {
 } from "@mui/material";
 import { Box, Container } from "@mui/system";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 
-const NotesList = ({notes, title, categories, handleChange, currentCategory, renderActions}) => {
+const NotesList = ({
+  notes,
+  title,
+  categories,
+  handleChange,
+  currentCategory,
+  renderActions,
+  linkObject = () => {},
+}) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   const renderNotes = () => {
     if (notes.length === 0) {
       return (
-        <div>
-          <Box display="flex" justifyContent="center">
-            <Typography variant="h6">There is no notes yet.</Typography>
+        <Grid item>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+              There is no notes here
+            </Typography>
+            <Icon fontSize="large">
+              <SentimentVeryDissatisfiedIcon fontSize="large" />
+            </Icon>
           </Box>
-        </div>
+        </Grid>
       );
     }
 
@@ -75,6 +105,41 @@ const NotesList = ({notes, title, categories, handleChange, currentCategory, ren
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
+            <Button
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={handleClick}
+              sx={{ color: "white" }}
+            >
+              <DensityMediumIcon color="white" />
+            </Button>
+            <Menu
+              id="basic-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleClose}
+              MenuListProps={{
+                "aria-labelledby": "basic-button",
+              }}
+            >
+              <MenuItem><Link to="/">
+              <Button
+                id="fade-button"
+                aria-controls={true ? "fade-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={true ? "true" : undefined}
+                onClick={() => {}}
+              >
+                <Typography variant="p" component="p" color="black">
+                  HOME
+                </Typography>
+              </Button>
+            </Link></MenuItem>
+            <MenuItem>{linkObject()}</MenuItem>
+            </Menu>
+            {/* {linkObject()}
             <Link to="/">
               <Button
                 id="fade-button"
@@ -87,7 +152,7 @@ const NotesList = ({notes, title, categories, handleChange, currentCategory, ren
                   HOME
                 </Typography>
               </Button>
-            </Link>
+            </Link> */}
           </Toolbar>
         </AppBar>
       </Box>
@@ -109,7 +174,13 @@ const NotesList = ({notes, title, categories, handleChange, currentCategory, ren
         </Select>
       </FormControl>
       <Container>
-        <Grid container spacing={16} justify="flex-start">
+        <Grid
+          container
+          spacing={16}
+          justify="flex-start"
+          justifyContent="center"
+          alignItems="center"
+        >
           {renderNotes()}
         </Grid>
       </Container>
