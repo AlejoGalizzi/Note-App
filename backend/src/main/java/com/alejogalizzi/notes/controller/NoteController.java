@@ -34,7 +34,6 @@ public class NoteController {
   @GetMapping
   public ResponseEntity<List<NoteDTO>> getNotes(
       @RequestParam(required = false, defaultValue = "false") boolean isArchived) {
-    System.out.println("Hi");
     return ResponseEntity.ok(noteService.findAll(isArchived));
 
   }
