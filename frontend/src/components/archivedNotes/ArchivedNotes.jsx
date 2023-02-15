@@ -59,9 +59,6 @@ const ArchivedNotes = () => {
           <RestoreIcon fontSize="large" />
         </IconButton>
         <IconButton>
-          <EditRoundedIcon fontSize="large" />
-        </IconButton>
-        <IconButton>
           <DeleteRoundedIcon fontSize="large" />
         </IconButton>
       </CardActions>

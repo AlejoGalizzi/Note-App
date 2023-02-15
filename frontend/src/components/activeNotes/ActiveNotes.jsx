@@ -16,8 +16,8 @@ const ActiveNotes = () => {
   const [notes, setNotes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("All");
+  const [openForm, setOpenForm] = useState(false);
 
-  // const fontSize = Math.min(10, 10 - ('Go to archive notes'.length - 10) / 10);
   const style = { whiteSpace: 'normal', wordWrap: 'break-word'}
 
   const linkObject = () => {
@@ -52,6 +52,10 @@ const ActiveNotes = () => {
   const onHandleArchive = (id) => {
     changeStatus(id).then(() => renderNotesAPI()).catch(error => console.log(error.message));
   }
+
+  const handleClickEdit = () => {
+    setOpenForm(true);
+  };
 
   const renderActions = (id) => {
     return (
