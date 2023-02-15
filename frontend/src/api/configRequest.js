@@ -17,11 +17,11 @@ export const getCategories = () => {
 }
 
 export const getActiveNotesByCategoryName = (categoryName) => {
-  return axios.get(`http://localhost:8080/notes/filter-by-category/active/${categoryName}`)
+  return axios.get(`http://localhost:8080/notes/filter-by-category/${categoryName}`)
 }
 
 export const getArchiveNotesByCategoryName = (categoryName) => {
-  return axios.get(`http://localhost:8080/notes/filter-by-category/active/${categoryName}`, {
+  return axios.get(`http://localhost:8080/notes/filter-by-category/${categoryName}`, {
     params: {
       isArchived: "true"
     }
@@ -29,5 +29,5 @@ export const getArchiveNotesByCategoryName = (categoryName) => {
 }
 
 export const changeStatus = (id) => {
-  return axios.post(`localhost:8080/notes/change-status/${id}`);
+  return axios.post(`http://localhost:8080/notes/change-status/${id}`, {});
 }
