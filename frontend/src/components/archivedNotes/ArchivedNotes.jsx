@@ -2,20 +2,23 @@ import React, { useEffect, useState } from "react";
 import { Button, CardActions, IconButton, Typography } from "@mui/material";
 import NotesList from "../notesList/NotesList";
 import DeleteRoundedIcon from "@mui/icons-material/DeleteRounded";
-import EditRoundedIcon from "@mui/icons-material/EditRounded";
 import RestoreIcon from "@mui/icons-material/Restore";
 import {
   getCategories,
   getArchiveNotes,
   getArchiveNotesByCategoryName,
   changeStatus,
+  deleteNote,
 } from "../../api/configRequest";
 import { Link } from "react-router-dom";
+import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 
 const ArchivedNotes = () => {
   const [notes, setNotes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("All");
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+  const [selectedNote, setSelectedNote] = useState({});
 
   const linkObject = () => {
     return (
@@ -27,7 +30,9 @@ const ArchivedNotes = () => {
           aria-expanded={true ? "true" : undefined}
           onClick={() => {}}
         >
-          <Typography variant="span" component="p" color="black">Return to active notes</Typography>
+          <Typography variant="span" component="p" color="black">
+            Return to active notes
+          </Typography>
         </Button>
       </Link>
     );
@@ -52,13 +57,38 @@ const ArchivedNotes = () => {
       .catch((error) => console.log(error.message));
   };
 
-  const renderActions = ({id}) => {
+  const onOpenDeleteModal = (id) => {
+    setSelectedNote(notes.filter((note) => note.id === id)[0]);
+    setOpenDeleteModal(true);
+  };
+
+  const onHandleDelete = () => {
+    console.log(selectedNote.id);
+    deleteNote(selectedNote.id)
+      .then(() => {
+        const actualNotes = notes.filter((note) => {
+          if (note.id === selectedNote.id) {
+            return false;
+          } else {
+            return true;
+          }
+        });
+        setNotes(actualNotes);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    setOpenDeleteModal(false);
+    setSelectedNote(null);
+  };
+
+  const renderActions = ({ id }) => {
     return (
       <CardActions>
         <IconButton onClick={() => onHandleRestore(id)}>
           <RestoreIcon fontSize="large" />
         </IconButton>
-        <IconButton>
+        <IconButton onClick={() => onOpenDeleteModal(id)}>
           <DeleteRoundedIcon fontSize="large" />
         </IconButton>
       </CardActions>
@@ -81,15 +111,23 @@ const ArchivedNotes = () => {
   };
 
   return (
-    <NotesList
-      title="Archive Notes"
-      notes={notes}
-      categories={categories}
-      handleChange={handleChange}
-      currentCategory={currentCategory}
-      renderActions={renderActions}
-      linkObject={linkObject}
-    />
+    <>
+      <NotesList
+        title="Archive Notes"
+        notes={notes}
+        categories={categories}
+        handleChange={handleChange}
+        currentCategory={currentCategory}
+        renderActions={renderActions}
+        linkObject={linkObject}
+      />
+      <ConfirmationModal
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+        handleConfirm={onHandleDelete}
+        setNote={setSelectedNote}
+      />
+    </>
   );
 };
 
