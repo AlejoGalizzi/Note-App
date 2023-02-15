@@ -75,6 +75,7 @@ const Form = ({
       open={openForm}
       onClose={handleClose}
       aria-labelledby="form-dialog-title"
+      maxWidth="xl"
     >
       <DialogTitle id="form-dialog-title">Create/Edit Note</DialogTitle>
       <form onSubmit={(event) => {
@@ -96,6 +97,8 @@ const Form = ({
             name="content"
             label="Content"
             type="text"
+            rows={7}
+            multiline
             fullWidth
             value={formData.content}
             onChange={handleChange}

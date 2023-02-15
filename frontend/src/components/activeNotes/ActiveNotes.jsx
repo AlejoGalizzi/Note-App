@@ -126,6 +126,7 @@ const ActiveNotes = () => {
       setNotes([...notes,formData]);
       setOpenAddNote(false);
     });
+    setOpenAddNote(false);
   };
 
   const renderForm = () => {
