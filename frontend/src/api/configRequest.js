@@ -28,6 +28,22 @@ export const getArchiveNotesByCategoryName = (categoryName) => {
   })
 }
 
+export const createNote = (formData) => {
+  return axios.post("http://localhost:8080/notes", formData);
+}
+
+export const updateNote = (formData,id) => {
+  return axios.put(`http://localhost:8080/notes/${id}`, formData);
+}
+
+export const deleteNote = (id) => {
+  return axios.delete(`http://localhost:8080/notes/${id}`);
+}
+
+export const createCategory = (categoryName) => {
+  return axios.post("http://localhost:8080/notes/add-category", {"name": categoryName})
+}
+
 export const changeStatus = (id) => {
   return axios.post(`http://localhost:8080/notes/change-status/${id}`, {});
 }
