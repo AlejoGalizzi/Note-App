@@ -64,7 +64,7 @@ public class GetNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
 
 
   @Before
-  public void build() {
+  public void setUp() {
     category1 = new Category(1L, CATEGORY_NAME_1, Date.from(
         Instant.now()));
     category2 = new Category(1L, CATEGORY_NAME_2, Date.from(
@@ -153,6 +153,17 @@ public class GetNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
         new ParameterizedTypeReference<List<NoteDTO>>() {});
     assertNotNull(response.getBody());
     assertEquals(response.getBody().size(),2);
+  }
+
+  @Test
+  public void shouldReturnNoNotesWhenFilter() {
+    when(noteRepository.findAll()).thenReturn(Arrays.asList(note1,note2,note3,note4));
+    ResponseEntity<List<NoteDTO>> response = restTemplate.exchange(
+        createURLWithPort(NOTE_CATEGORY_FILTER+"test"),
+        HttpMethod.GET, new HttpEntity<>(headers),
+        new ParameterizedTypeReference<List<NoteDTO>>() {});
+    assertNotNull(response.getBody());
+    assertEquals(response.getBody().size(),0);
   }
 
 }

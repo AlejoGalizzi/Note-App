@@ -1,5 +1,8 @@
 package com.alejogalizzi.notes.integration;
 
+import com.alejogalizzi.notes.model.dto.CategoryDTO;
+import com.alejogalizzi.notes.model.dto.NoteDTO;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
@@ -11,6 +14,8 @@ public class AbstractBaseNoteIntegrationTest {
   protected static final String NOTE_PATH = "/notes";
 
   protected static final String NOTE_CATEGORY_FILTER = NOTE_PATH + "/filter-by-category/";
+
+  protected static final String CATEGORY_ADD = NOTE_PATH + "/add-category";
 
   protected static final String CATEGORY_PATH = NOTE_PATH + "/categories";
 
@@ -37,5 +42,13 @@ public class AbstractBaseNoteIntegrationTest {
   private int port;
   protected String createURLWithPort(String uri) {
     return "http://localhost:" + port + uri;
+  }
+
+  protected NoteDTO createRequest(String name, String content, List<CategoryDTO> categories) {
+    NoteDTO note = new NoteDTO();
+    note.setName(name);
+    note.setContent(content);
+    note.setCategories(categories);
+    return note;
   }
 }
