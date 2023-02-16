@@ -6,16 +6,17 @@ import {
   Typography,
   FormControl,
   InputLabel,
-  Input,
   InputAdornment,
   IconButton,
   OutlinedInput,
 } from "@mui/material";
-import { Container } from "@mui/system";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { logIn } from "../../api/configRequest";
+import { Container } from "@mui/system";
+import { signUp } from "../../api/configRequest";
 
-const LogIn = () => {
+
+
+const SignUp = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -37,15 +38,14 @@ const LogIn = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    await logIn(username, password).then((response) => {
-      localStorage.setItem("token", response.data.token);
-      navigate("/");
+    await signUp(username, password).then((response) => {
+      navigate("/login");
     });
   };
 
   return (
     <Container>
-      <Typography variant="h3">Log In</Typography>
+      <Typography variant="h3">Sign Up</Typography>
       <form onSubmit={(event) => handleSubmit(event)}>
         <TextField
           label="Username"
@@ -86,14 +86,15 @@ const LogIn = () => {
         Submit
       </Button>
       <Button
+        type="submit"
         variant="contained"
         color="primary"
-        onClick={() => navigate("/signUp")}
+        onClick={() => navigate('/login')}
       >
-        Sign Up
+        Log In
       </Button>
     </Container>
   );
 };
 
-export default LogIn;
+export default SignUp;
