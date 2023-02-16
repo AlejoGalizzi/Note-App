@@ -17,9 +17,9 @@ function LogIn() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    logIn(username, password).then((response) => {
+    await logIn(username, password).then((response) => {
       localStorage.setItem("token", response.data.token);
       navigate("/");
     });
@@ -36,11 +36,12 @@ function LogIn() {
           fullWidth
         />
         <TextField
-          label="Password"
-          type="password"
-          value={password}
+         type={password == "" ? 'text' : 'password'} // set the type to text
+         label="Password"
+         name="password"
+         variant="outlined"
+         margin="normal"
           onChange={handlePasswordChange}
-          margin="normal"
           fullWidth
         />
         <Button type="submit" variant="contained" color="primary">
