@@ -1,12 +1,16 @@
 package com.alejogalizzi.notes.integration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
+import org.springframework.test.web.client.MockRestServiceServer;
 
 public class AbstractBaseNoteIntegrationTest {
 
   protected static final String NOTE_PATH = "/notes";
+
+  protected static final String NOTE_CATEGORY_FILTER = NOTE_PATH + "/filter-by-category/";
 
   protected static final String CATEGORY_PATH = NOTE_PATH + "/categories";
 
@@ -26,6 +30,8 @@ public class AbstractBaseNoteIntegrationTest {
   protected static final String CATEGORY_NAME_3 = "Category 3";
 
   protected TestRestTemplate restTemplate = new TestRestTemplate();
+
+  protected MockRestServiceServer mockServer;
   protected HttpHeaders headers = new HttpHeaders();
   @LocalServerPort
   private int port;
