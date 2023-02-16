@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Button,
@@ -31,6 +31,7 @@ const NotesList = ({
   setOpenAddNote = () => {},
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
+  const navigate = useNavigate();
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -39,6 +40,11 @@ const NotesList = ({
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleLogOut = () => {
+    localStorage.removeItem('token');
+    navigate("/login");
+  }
 
   const renderNotes = () => {
     if (notes.length === 0) {
@@ -107,9 +113,11 @@ const NotesList = ({
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
-            {title !== "Active Notes" ? null : 
-              <Button onClick={() => setOpenAddNote(true)} variant="contained">Add note</Button>
-            }
+            {title !== "Active Notes" ? null : (
+              <Button onClick={() => setOpenAddNote(true)} variant="contained">
+                Add note
+              </Button>
+            )}
             <Button
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
@@ -146,6 +154,19 @@ const NotesList = ({
                 </Link>
               </MenuItem>
               <MenuItem>{linkObject()}</MenuItem>
+              <MenuItem>
+                <Button
+                  id="fade-button"
+                  aria-controls={true ? "fade-menu" : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={true ? "true" : undefined}
+                  onClick={handleLogOut}
+                >
+                  <Typography variant="p" component="p" color="black">
+                    Log Out
+                  </Typography>
+                </Button>
+              </MenuItem>
             </Menu>
           </Toolbar>
         </AppBar>

@@ -1,22 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import reportWebVitals from './reportWebVitals';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-
-import ActiveNotes from './components/activeNotes/ActiveNotes';
-import Home from './components/home/Home';
-import ArchivedNotes from './components/archivedNotes/ArchivedNotes';
+import reportWebVitals from './reportWebVitals'
+import { App } from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-    <BrowserRouter>
-    <Routes>
-      <Route path='/' element={<Home/>}></Route>
-      <Route path='/activeNotes' element={<ActiveNotes/>}></Route>
-      <Route path='/archiveNotes' element={<ArchivedNotes/>}></Route>
-    </Routes>
-    </BrowserRouter>
+    <App/>
 );
 
 // If you want to start measuring performance in your app, pass a function
