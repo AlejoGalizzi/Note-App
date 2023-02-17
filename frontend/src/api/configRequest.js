@@ -124,9 +124,22 @@ export const logIn = (username, password) => {
 
 export const signUp = (username, password) => {
   return axios.post(
-    "http://localhost:8080//register",
+    "http://localhost:8080/register",
     { username, password },
     {
+      withCredentials: true,
+    }
+  );
+};
+
+export const validateToken = (token) => {
+  return axios.post(
+    "http://localhost:8080/validate-token",
+    {},
+    {
+      params: {
+        token: token
+      },
       withCredentials: true,
     }
   );

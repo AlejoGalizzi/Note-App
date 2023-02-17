@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -55,6 +56,13 @@ public class AuthenticationController {
     final String token = jwtTokenUtil.generateToken(userDetails);
 
     return ResponseEntity.ok(new JwtResponse(token));
+  }
+
+  @PostMapping(value = "/validate-token")
+  public ResponseEntity<?> validateToken(@RequestParam String token) {
+    if(jwtTokenUtil.validateToken(token, jwtTokenUtil.getUsernameFromToken(token))) {
+      return ResponseEntity.ok().build();
+    }else return ResponseEntity.notFound().build();
   }
 
   private void authenticate(String username, String password) {
