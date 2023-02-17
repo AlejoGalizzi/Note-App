@@ -4,14 +4,12 @@ FROM node:16.13.0 AS frontend
 # Set the working directory to /app
 WORKDIR /app
 
-# Copy the package.json and package-lock.json files to the container
-COPY package*.json ./
+# Copy the rest of the application to the container
+COPY frontend/ .
 
 # Install Node.js dependencies
 RUN npm install
 
-# Copy the rest of the application to the container
-COPY . .
 
 # Build the React app
 RUN npm run build
@@ -22,8 +20,10 @@ FROM openjdk:17-jdk AS backend
 # Set the working directory to /app
 WORKDIR /app
 
+COPY backend/ .
+
 # Copy the JAR file to the container
-COPY target/*.jar app.jar
+RUN ./mvnw package -DskipTest
 
 # Expose port 8080 for the Spring app
 EXPOSE 8080
