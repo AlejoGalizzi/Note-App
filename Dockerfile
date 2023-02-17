@@ -2,7 +2,7 @@
 FROM node:16.13.0 AS frontend
 
 # Set the working directory to /app
-WORKDIR /frontend
+WORKDIR /app
 
 # Copy the package.json and package-lock.json files to the container
 COPY package*.json ./
@@ -20,7 +20,7 @@ RUN npm run build
 FROM openjdk:17-jdk AS backend
 
 # Set the working directory to /app
-WORKDIR /backend
+WORKDIR /app
 
 # Copy the JAR file to the container
 COPY target/*.jar app.jar
