@@ -1,14 +1,15 @@
 services:
   - name: backend
-    buildCommand: "mvn clean package"
+    buildCommand: "sudo apt-get install maven -y && mvn clean package"
     startCommand: "java -jar notes-0.0.1-SNAPSHOT.jar"
     env:
       - key: SPRING_PROFILES_ACTIVE
         value: "prod"
       - key: PORT
         value: "8080"
+    
   - name: frontend
     type: "web"
     env:
       - key: REACT_APP_API_URL
-        value: "https://backend.your-domain.com"
+        value: "https://note-app-uvud.onrender.com"
