@@ -25,4 +25,5 @@ cd backend
 
 # Start the React project
 cd ../frontend
+npm install
 npm start &
