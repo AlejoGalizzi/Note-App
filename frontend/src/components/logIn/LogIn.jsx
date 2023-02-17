@@ -58,7 +58,7 @@ const LogIn = () => {
           <InputLabel htmlFor="password">Password</InputLabel>
           <OutlinedInput
             id="password"
-            type={showPassword || password == "" ? "text" : "password"}
+            type={showPassword || password === "" ? "text" : "password"}
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
