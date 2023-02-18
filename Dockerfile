@@ -1,32 +1,37 @@
-# Use an official Node runtime as a parent image
-FROM node:16.13.0 AS frontend
+# Choose a base image with JDK 17 and Node.js 17
+FROM openjdk:17-jdk AS build
 
-# Set the working directory to /app
-WORKDIR /app
+FROM node:17 AS nodebuild
 
-# Copy the rest of the application to the container
-COPY frontend/ .
+# # Install Node.js
+# RUN apt-get update && \
+#     apt-get install -y curl && \
+#     curl -fsSL https://deb.nodesource.com/setup_17.x | bash - && \
+#     apt-get install -y nodejs
 
-# Install Node.js dependencies
-RUN npm install
+# Install MySQL and create the notes schema
+RUN su apt-get update && \
+    su apt-get -y upgrade && \
+    su apt-get install -y mysql-server && \
+    rm -rf /var/lib/apt/lists/*
 
+RUN service mysql start && \
+    mysql -u root -proot -e "CREATE DATABASE notes;"
 
-# Build the React app
-RUN npm run build
+# Copy the Spring Boot project
+COPY backend /backend
 
-# Use an official OpenJDK runtime as a parent image
-FROM openjdk:17-jdk AS backend
+# Copy the React project
+COPY frontend /frontend
 
-# Set the working directory to /app
-WORKDIR /app
+# Build the React project
+WORKDIR /frontend
+RUN npm install && \
+    npm run build
 
-COPY backend/ .
+# Package the Spring Boot project
+WORKDIR /backend
+RUN ./mvnw package
 
-# Copy the JAR file to the container
-RUN ./mvnw package -DskipTest
-
-# Expose port 8080 for the Spring app
-EXPOSE 8080
-
-# Run the Spring app when the container starts
-CMD ["java", "-jar", "app.jar"]
+# Start the Spring Boot project
+CMD ["java", "-jar", "/backend/target/backend.jar"]
