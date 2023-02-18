@@ -9,7 +9,6 @@ const validate = async (token) => {
     );
     return response.status === 200;
   } catch (error) {
-    console.log(error)
     return false;
   }
 };
@@ -22,7 +21,7 @@ const ProtectedRoutes = () => {
     const checkAuthentication = async () => {
       const token = localStorage.getItem('token');
 
-      if(token) {
+      if(token && token != undefined) {
         const isValid = await validate(token);
         setIsAuthenticated(isValid);
       }

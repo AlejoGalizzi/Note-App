@@ -14,12 +14,14 @@ export const App = () => (
       <Route
         element={<ProtectedRoutes />}
       >
+        <Route path="/" element={<Navigate to="/home"/>}></Route>
         <Route path="/home" element={<Home />}></Route>
         <Route path="/activeNotes" element={<ActiveNotes />}></Route>
         <Route path="/archiveNotes" element={<ArchivedNotes />}></Route>
       </Route>
       <Route path="/login" element={<LogIn />}></Route>
       <Route path="/signUp" element={<SignUp />}></Route>
+      <Route path="/*" element={<LogIn/>}></Route>
     </Routes>
   </BrowserRouter>
 );
