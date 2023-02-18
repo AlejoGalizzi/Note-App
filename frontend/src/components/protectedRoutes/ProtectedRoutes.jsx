@@ -8,7 +8,8 @@ const validate = async (token) => {
       token
     );
     return response.status === 200;
-  } catch {
+  } catch (error) {
+    console.log(error)
     return false;
   }
 };
@@ -19,26 +20,25 @@ const ProtectedRoutes = () => {
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
 
       if(token) {
         const isValid = await validate(token);
         setIsAuthenticated(isValid);
-        setIsLoading(false);
       }
-      
+      setIsLoading(false);
     } 
     checkAuthentication();
   }, []);
 
-  console.log(isAuthenticated)
+
 
   if(isLoading) {
     return <div>Loading...</div>
   }
 
-  if(isAuthenticated) {
-    <Outlet />
+  if(isAuthenticated) { 
+    return <Outlet />
   }
 
   return <Navigate to="/login" />;
