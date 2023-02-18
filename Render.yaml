@@ -1,5 +1,0 @@
-build:
-  - docker build -t $RENDER_APP_NAME .
-
-start:
-  - docker run -p 8080:8080 $RENDER_APP_NAME
