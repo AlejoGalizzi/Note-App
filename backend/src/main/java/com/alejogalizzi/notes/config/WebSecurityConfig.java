@@ -57,11 +57,13 @@ public class WebSecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http.csrf().disable()
+        .cors()
+        .and()
         .sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
         .authorizeHttpRequests()
-        .requestMatchers("/register", "/authenticate", "/verify-token").permitAll()
+        .requestMatchers("/register", "/authenticate", "/validate-token").permitAll()
         .requestMatchers("/notes/**").authenticated()
         .and().exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

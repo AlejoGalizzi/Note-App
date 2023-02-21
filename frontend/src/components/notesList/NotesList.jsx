@@ -139,7 +139,7 @@ const NotesList = ({
               }}
             >
               <MenuItem>
-                <Link to="/">
+                <Link to="/home">
                   <Button
                     id="fade-button"
                     aria-controls={true ? "fade-menu" : undefined}
