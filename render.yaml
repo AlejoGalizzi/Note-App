@@ -3,9 +3,9 @@ services:
     type: compose
     plan: hobby
     env:
-      - key: REACT_APP_BACKEND_URL
+      - key: FRONTEND_URL
         value: https://api.render.com/deploy/srv-cfqgu2qrrk08lt7gptk0?key=kpQ_U5r-Ckk
-      - key: SPRING_DATASOURCE_URL
+      - key: DB_URL
         value: jdbc:mysql://api.render:3306/notes
       - key: DB_USERNAME
         value: user
