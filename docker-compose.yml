@@ -1,0 +1,33 @@
+services:
+  backend:
+    build: 
+      context: backend
+      dockerfile: Dockerfile
+    ports: 
+      - 8080:8080
+    environment:
+          DB_URL: jdbc:mysql://mysql:3306/notes
+          DB_USERNAME: user
+          DB_PASSWORD: password
+    depends_on:
+      - mysql
+  frontend:
+    build: 
+      context: frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:3000
+    depends_on:
+      - backend
+  mysql:
+    image: mysql:8.0
+    volumes:
+      - dbdata:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USERNAME: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: notes
+
+volumes:
+  dbdata:
