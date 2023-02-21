@@ -6,7 +6,6 @@ import {
   Typography,
   FormControl,
   InputLabel,
-  Input,
   InputAdornment,
   IconButton,
   OutlinedInput,
@@ -39,7 +38,7 @@ const LogIn = () => {
     event.preventDefault();
     await logIn(username, password).then((response) => {
       localStorage.setItem("token", response.data.token);
-      navigate("/");
+      navigate("/home");
     });
   };
 
