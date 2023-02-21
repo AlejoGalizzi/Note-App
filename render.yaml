@@ -1,0 +1,36 @@
+services:
+  - name: my-app
+    type: compose
+    plan: hobby
+    env:
+      - key: FRONTEND_URL
+        value: www.note-app.com
+      - key: DB_URL
+        value: jdbc:mysql://note-app.com:3306/notes
+      - key: DB_USERNAME
+        value: user
+      - key: DB_PASSWORD
+        value: password
+    repo: alejoGalizzi/repo
+    docker_compose_path: docker-compose.yml
+    docker_compose_config: |
+      version: '3'
+      services:
+        frontend:
+          image: alejoGalizzi/frontend
+          ports:
+            - 80:3000
+        backend:
+          image: alejoGalizzi/backend
+          ports:
+            - 8080:8080
+        db:
+          image: mysql:8.0
+          environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: notes
+          volumes:
+            - db-data:/var/lib/mysql
+
+      volumes:
+        db-data:
