@@ -27,3 +27,9 @@ cd backend
 cd ../frontend
 npm install
 npm start &
+
+# Register a signal handler to kill the background processes
+trap 'kill $(jobs -p)' INT
+
+# Wait for all child processes to exit
+wait

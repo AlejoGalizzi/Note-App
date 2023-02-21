@@ -131,3 +131,16 @@ export const signUp = (username, password) => {
     }
   );
 };
+
+export const validateToken = (token) => {
+  return axios.post(
+    "http://localhost:8080/validate-token",
+    {},
+    {
+      params: {
+        token: token
+      },
+      withCredentials: true,
+    }
+  );
+};
