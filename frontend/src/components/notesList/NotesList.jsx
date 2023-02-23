@@ -28,7 +28,7 @@ const NotesList = ({
   currentCategory,
   renderActions,
   linkObject = () => {},
-  setOpenAddNote = () => {},
+  setOpen = () => {},
 }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
@@ -36,6 +36,10 @@ const NotesList = ({
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  const handleClickAdd = () => {
+    setOpen(true);
+  }
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -114,7 +118,7 @@ const NotesList = ({
               {title}
             </Typography>
             {title !== "Active Notes" ? null : (
-              <Button onClick={() => setOpenAddNote(true)} variant="contained">
+              <Button onClick={handleClickAdd} variant="contained">
                 Add note
               </Button>
             )}
