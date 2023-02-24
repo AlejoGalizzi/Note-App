@@ -2,9 +2,9 @@ package com.alejogalizzi.notes.seeder;
 
 import com.alejogalizzi.notes.model.entity.Category;
 import com.alejogalizzi.notes.model.entity.Note;
+
 import com.alejogalizzi.notes.repository.CategoryRepository;
 import com.alejogalizzi.notes.repository.NoteRepository;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -59,6 +59,7 @@ public class NotesSeeder implements CommandLineRunner {
     if(category == null) {
       category = new Category();
       category.setName(categoryName);
+      category.setColor("#808080");
       categoryRepository.save(category);
     };
     note.setCategories(Collections.singletonList(category));

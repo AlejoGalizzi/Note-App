@@ -27,11 +27,8 @@ public class Category {
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private long id;
-
-  @NotBlank
-  @Size(min = 3, max = 20, message = "Category name must have length between 3 and 20 characters")
   private String name;
-
+  private String color;
   @CreatedDate
   @Temporal(TemporalType.DATE)
   private Date createdAt;

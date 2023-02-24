@@ -59,11 +59,11 @@ public class GetNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
   public void setUp() {
     createTokenHeader();
     user = new User(1L, USERNAME, PASSWORD);
-    category1 = new Category(1L, CATEGORY_NAME_1, Date.from(
+    category1 = new Category(1L, CATEGORY_NAME_1, "#808080", Date.from(
         Instant.now()));
-    category2 = new Category(1L, CATEGORY_NAME_2, Date.from(
+    category2 = new Category(1L, CATEGORY_NAME_2,"#808080", Date.from(
         Instant.now()));
-    category3 = new Category(1L, CATEGORY_NAME_3, Date.from(
+    category3 = new Category(1L, CATEGORY_NAME_3,"#808080", Date.from(
         Instant.now()));
     note1 = new Note(1L, NOTE_NAME_1, CONTENT_1, false,
         Collections.singletonList(category1), Date.from(Instant.now()), Date.from(Instant.now()));
