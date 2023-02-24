@@ -79,12 +79,12 @@ const ActiveNotes = () => {
 
   const onClickAddCategory = (newCategory) => {
     createCategory(newCategory).then(() => {
-      setCategories([...categories, { name: newCategory }]);
+      setCategories([...categories, { name: newCategory.name, color: newCategory.color }]);
     }).catch(error => {
       const {status, messages} = error.response.data;
       if(status === 422) {
         for(let field in messages) {
-          setError('add-category', {message: messages[field]});
+          setError('category', {message: messages[field]});
         }
       console.log("Errors: ", errors)
       }
@@ -212,7 +212,7 @@ const ActiveNotes = () => {
         open={openDeleteModal}
         setOpen={setOpenDeleteModal}
         handleConfirm={onHandleDelete}
-        setNote={setSelectedNote}
+        setObject={setSelectedNote}
       />
     </>
   );

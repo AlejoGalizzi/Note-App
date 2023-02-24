@@ -2,10 +2,10 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/
 import React from 'react';
 
 
-const ConfirmationModal = ({open = null, handleConfirm = () => {}, setOpen = () => {}, setNote= () => {}}) => {
+const ConfirmationModal = ({open = null, handleConfirm = () => {}, setOpen = () => {}, setObject= () => {}}) => {
 
   const handleClose = () => {
-    setNote(null)
+    setObject(null)
     setOpen(false);
   }
   return (
