@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { validateToken } from "../../api/configRequest";
-
-const validate = async (token) => {
-  try{
-    const response = await validateToken(
-      token
-    );
-    return response.status === 200;
-  } catch (error) {
-    return false;
-  }
-};
+import { withAuth } from "../../util/withAuth";
 
 const ProtectedRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -19,18 +8,11 @@ const ProtectedRoutes = () => {
 
   useEffect(() => {
     const checkAuthentication = async () => {
-      const token = localStorage.getItem('token');
-
-      if(token && token != undefined) {
-        const isValid = await validate(token);
-        setIsAuthenticated(isValid);
-      }
+      setIsAuthenticated(await withAuth());
       setIsLoading(false);
     } 
     checkAuthentication();
   }, []);
-
-
 
   if(isLoading) {
     return <div>Loading...</div>
