@@ -2,119 +2,84 @@ import axios from "axios";
 
 const token = localStorage.getItem("token");
 
+const { REACT_APP_BACKEND_URL } = process.env;
+
+const headers = {
+  withCredentials: true,
+  headers: {
+    Authorization: "Bearer " + token,
+  },
+}
+
 export const getActiveNotes = () => {
-  return axios.get("http://localhost:8080/notes", {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-    withCredentials: true,
-  });
+  return axios.get(`${REACT_APP_BACKEND_URL}/notes`, headers);
 };
 
 export const getArchiveNotes = () => {
-  return axios.get("http://localhost:8080/notes", {
+  return axios.get(`${REACT_APP_BACKEND_URL}/notes`, {
+    ...headers,
     params: {
       isArchived: "true",
-    },
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-    withCredentials: true,
+    }
   });
-};
+  });
+}
 
 export const getCategories = () => {
-  return axios.get("http://localhost:8080/notes/categories", {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-    withCredentials: true,
-  });
+  return axios.get(`${REACT_APP_BACKEND_URL}/notes/categories`, headers);
 };
 
 export const getActiveNotesByCategoryName = (categoryName) => {
   return axios.get(
-    `http://localhost:8080/notes/filter-by-category/${categoryName}`,
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      withCredentials: true,
-    }
+    `${REACT_APP_BACKEND_URL}/notes/filter-by-category/${categoryName}`,
+    headers
   );
 };
 
 export const getArchiveNotesByCategoryName = (categoryName) => {
   return axios.get(
-    `http://localhost:8080/notes/filter-by-category/${categoryName}`,
+    `${REACT_APP_BACKEND_URL}/notes/filter-by-category/${categoryName}`,
     {
+      ...headers,
       params: {
         isArchived: "true",
-      },
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      withCredentials: true,
+      }
+    }
     }
   );
 };
 
 export const createNote = (formData) => {
-  return axios.post("http://localhost:8080/notes", formData, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-    withCredentials: true,
-  });
+  return axios.post(`${REACT_APP_BACKEND_URL}/notes`, formData, headers);
 };
 
 export const updateNote = (formData, id) => {
-  return axios.put(`http://localhost:8080/notes/${id}`, formData, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-    withCredentials: true,
-  });
+  return axios.put(`${REACT_APP_BACKEND_URL}/notes/${id}`, formData, headers);
 };
 
 export const deleteNote = (id) => {
-  return axios.delete(`http://localhost:8080/notes/${id}`, {
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-    withCredentials: true,
-  });
+  return axios.delete(`${REACT_APP_BACKEND_URL}/notes/${id}`, headers);
 };
 
 export const createCategory = (categoryName) => {
   return axios.post(
-    "http://localhost:8080/notes/add-category",
+    `${REACT_APP_BACKEND_URL}/notes/add-category`,
     { name: categoryName },
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      withCredentials: true,
-    }
+    headers
   );
 };
 
 export const changeStatus = (id) => {
   return axios.post(
-    `http://localhost:8080/notes/change-status/${id}`,
+    `${REACT_APP_BACKEND_URL}/notes/change-status/${id}`,
     {},
-    {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-      withCredentials: true,
-    }
+    headers
   );
 };
 
 export const logIn = (username, password) => {
   return axios.post(
-    "http://localhost:8080/authenticate",
+    `${REACT_APP_BACKEND_URL}/authenticate`,
     { username, password },
     {
       withCredentials: true,
@@ -124,22 +89,9 @@ export const logIn = (username, password) => {
 
 export const signUp = (username, password) => {
   return axios.post(
-    "http://localhost:8080/register",
+    `${REACT_APP_BACKEND_URL}/register`,
     { username, password },
     {
-      withCredentials: true,
-    }
-  );
-};
-
-export const validateToken = (token) => {
-  return axios.post(
-    "http://localhost:8080/validate-token",
-    {},
-    {
-      params: {
-        token: token
-      },
       withCredentials: true,
     }
   );

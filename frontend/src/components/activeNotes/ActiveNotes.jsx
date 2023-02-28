@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { FormProvider, useForm } from "react-hook-form";
 import { Button, CardActions, IconButton, Typography } from "@mui/material";
 import NotesList from "../notesList/NotesList";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
@@ -14,7 +16,6 @@ import {
   deleteNote,
   createNote,
 } from "../../api/configRequest";
-import { Link } from "react-router-dom";
 import Form from "../form/Form";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 
@@ -22,10 +23,10 @@ const ActiveNotes = () => {
   const [notes, setNotes] = useState([]);
   const [categories, setCategories] = useState([]);
   const [currentCategory, setCurrentCategory] = useState("All");
-  const [openFormEdit, setOpenForm] = useState(false);
-  const [openAddNote, setOpenAddNote] = useState(false);
+  const [openForm, setOpenForm] = useState(false);
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
-  const [selectedNote, setSelectedNote] = useState({});
+  const [selectedNote, setSelectedNote] = useState(null);
+  const { setError, formState: { errors }, clearErrors } = useForm();
 
   const style = { whiteSpace: "normal", wordWrap: "break-word" };
 
@@ -79,6 +80,14 @@ const ActiveNotes = () => {
   const onClickAddCategory = (newCategory) => {
     createCategory(newCategory).then(() => {
       setCategories([...categories, { name: newCategory }]);
+    }).catch(error => {
+      const {status, messages} = error.response.data;
+      if(status === 422) {
+        for(let field in messages) {
+          setError('add-category', {message: messages[field]});
+        }
+      console.log("Errors: ", errors)
+      }
     });
   };
 
@@ -88,7 +97,6 @@ const ActiveNotes = () => {
   };
 
   const onHandleDelete = () => {
-    console.log(selectedNote.id);
     deleteNote(selectedNote.id)
       .then(() => {
         const actualNotes = notes.filter((note) => {
@@ -117,40 +125,43 @@ const ActiveNotes = () => {
         }
       });
       setNotes(actualNotes);
+      setSelectedNote(null);
+      setOpenForm(false);
+    }).catch(error => {
+      console.log(error)
     });
-    setOpenForm(false);
+    
   };
 
-  const handleSubmitCreation = (formData) => {
-    createNote(formData).then(() => {
-      setNotes([...notes,formData]);
-      setOpenAddNote(false);
+  const handleSubmitCreation = (data) => {
+    console.log(data);
+    createNote(data).then(() => {
+      setNotes([...notes,data]);
+      clearErrors();
+      setOpenForm(false);
+    }).catch(error => {
+      const {status, messages} = error.response.data;
+      if(status === 422) {
+        for(let field in messages) {
+          setError(field, {message: messages[field]});
+        }
+        console.log("Errors: ", errors)
+      }else console.log(error);
     });
-    setOpenAddNote(false);
   };
 
   const renderForm = () => {
-    if (openFormEdit) {
-      return (
-        <Form
-          data={selectedNote}
-          openForm={openFormEdit}
-          setOpenForm={setOpenForm}
-          allCategories={categories}
-          handleSubmit={onHandleSubmit}
-          onClickAddCategory={onClickAddCategory}
-        />
-      );
-    }else if(openAddNote) {
-      return (
-        <Form
-          openForm={openAddNote}
-          setOpenForm={setOpenAddNote}
-          allCategories={categories}
-          handleSubmit={handleSubmitCreation}
-          onClickAddCategory={onClickAddCategory}
-        />
-      );
+    if(openForm){
+      return <Form
+        data={selectedNote ? selectedNote : undefined }
+        openForm={openForm}
+        setOpenModalForm={setOpenForm}
+        setSelectedNote={setSelectedNote}
+        allCategories={categories}
+        onSubmit={selectedNote ? onHandleSubmit : handleSubmitCreation}
+        onClickAddCategory={onClickAddCategory}
+        errorsSystem={{errors: errors, clearErrors: clearErrors }}
+      />
     }else return null;
   };
 
@@ -175,10 +186,10 @@ const ActiveNotes = () => {
       getActiveNotesByCategoryName(currentCategory).then((response) => {
         setNotes(response.data);
       });
-    } else if(!openAddNote && !openFormEdit) {
+    } else if(!openForm) {
       getActiveNotes().then(response => setNotes(response.data))
     }
-  }, [currentCategory, openAddNote, openFormEdit]);
+  }, [currentCategory, openForm]);
 
   const handleChange = (event) => {
     setCurrentCategory(event.target.value);
@@ -194,7 +205,7 @@ const ActiveNotes = () => {
         currentCategory={currentCategory}
         renderActions={renderActions}
         linkObject={linkObject}
-        setOpenAddNote={setOpenAddNote}
+        setOpen={setOpenForm}
       />
       {renderForm()}
       <ConfirmationModal

@@ -6,7 +6,6 @@ import {
   Typography,
   FormControl,
   InputLabel,
-  Input,
   InputAdornment,
   IconButton,
   OutlinedInput,
