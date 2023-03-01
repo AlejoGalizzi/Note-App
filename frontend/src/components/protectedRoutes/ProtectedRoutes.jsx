@@ -1,4 +1,3 @@
-import { validate } from "json-schema";
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import { withAuth } from "../../util/withAuth";
