@@ -1,6 +1,5 @@
 import { validateToken } from "../api/configRequest";
 
-
 export const withAuth = async () => {
   const token = localStorage.getItem('token');
 
@@ -10,6 +9,7 @@ export const withAuth = async () => {
     );
     return response === 200;
   }
-    return false;
+  
+  return false;
 }
 

@@ -22,7 +22,6 @@ export const getArchiveNotes = () => {
       isArchived: "true",
     }
   });
-  });
 }
 
 export const getCategories = () => {
@@ -44,7 +43,6 @@ export const getArchiveNotesByCategoryName = (categoryName) => {
       params: {
         isArchived: "true",
       }
-    }
     }
   );
 };
@@ -92,6 +90,19 @@ export const signUp = (username, password) => {
     `${REACT_APP_BACKEND_URL}/register`,
     { username, password },
     {
+      withCredentials: true,
+    }
+  );
+};
+
+export const validateToken = (token) => {
+  return axios.post(
+    `${REACT_APP_BACKEND_URL}/validate-token`,
+    {},
+    {
+      params: {
+        token: token,
+      },
       withCredentials: true,
     }
   );
