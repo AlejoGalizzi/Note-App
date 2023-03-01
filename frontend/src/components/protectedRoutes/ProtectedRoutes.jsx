@@ -1,38 +1,18 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
-import { validateToken } from "../../api/configRequest";
+import { withAuth } from "../../util/withAuth";
 
-const validate = async (token) => {
-  try{
-    const response = await validateToken(
-      token
-    );
-    return response.status === 200;
-  } catch (error) {
-    return false;
-  }
-};
 
 const ProtectedRoutes = () => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
 
   useEffect(() => {
-    const checkAuthentication = async () => {
-      const token = localStorage.getItem('token');
-
-      if(token && token !== undefined) {
-        const isValid = await validate(token);
-        setIsAuthenticated(isValid);
-      }
-      setIsLoading(false);
-    } 
-    checkAuthentication();
+    withAuth().then(valid => {
+      setIsAuthenticated(valid)
+    }).catch(error => setIsAuthenticated(false))
+    
   }, []);
-
-
-
-  if(isLoading) {
+  if(isAuthenticated === null) {
     return <div>Loading...</div>
   }
 
