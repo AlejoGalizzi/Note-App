@@ -7,7 +7,7 @@ export const withAuth = async () => {
     const response = await validateToken(
       token
     );
-    return response === 200;
+    return response.status === 200;
   }
   
   return false;
