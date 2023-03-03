@@ -8,6 +8,7 @@ import { DeleteOutline } from "@mui/icons-material";
 import { Container } from "@mui/system";
 import { Link, useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import MenuButton from "../menuButton/MenuButton";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
@@ -100,7 +101,7 @@ const Categories = () => {
             <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
               Categories
             </Typography>
-            <Button
+            {/* <Button
               id="basic-button"
               aria-controls={open ? "basic-menu" : undefined}
               aria-haspopup="true"
@@ -148,7 +149,8 @@ const Categories = () => {
                   </Typography>
                 </Button>
               </MenuItem>
-            </Menu>
+            </Menu> */}
+            <MenuButton/>
           </Toolbar>
         </AppBar>
       </Box>
