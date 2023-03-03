@@ -8,6 +8,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Container } from "@mui/system";
+import "./home.css";
 
 
 const Home = () => {
@@ -58,6 +59,7 @@ const Home = () => {
                   display: "flex",
                   width: "100%",
                   maxWidth: "100%",
+                  padding: "0",
                   backgroundColor: "primary.main",
                   "&:hover": {
                     backgroundColor: "primary.dark",
@@ -68,6 +70,30 @@ const Home = () => {
                   
                 }}>
                   <Typography variant="h4" sx={{fontFamily: ['Tahoma', 'Sans-Serif'], color: 'white'}}>Archive Notes</Typography>
+              </Box>
+              </Link>
+            </Grid>
+            <Grid item xs={6} justifyContent="center" alignItems="center">
+            <Link to="/categories" style={{ textDecoration: "none" }}>
+              <Box
+                sx={{
+                  flexGrow: 1,
+                  display: "flex",
+                  width: "100%",
+                  maxWidth: "100%",
+                  height:"100%",
+                  backgroundColor: "primary.main",
+                  "&:hover": {
+                    backgroundColor: "primary.dark",
+                    // opacity: [0.9, 0.8, 0.7],
+                  },
+
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+              >
+                
+                  <Typography variant="h4" sx={{fontFamily: ['Tahoma', 'Sans-Serif'], color: 'white'}}>Categories</Typography>
               </Box>
               </Link>
             </Grid>
