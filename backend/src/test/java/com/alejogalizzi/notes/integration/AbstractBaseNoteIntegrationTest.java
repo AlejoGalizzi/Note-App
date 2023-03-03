@@ -50,6 +50,8 @@ public class AbstractBaseNoteIntegrationTest {
 
   protected static final String CATEGORY_NAME_3 = "Category 3";
 
+  protected static final String CATEGORY_COLOR = "#808080";
+
   protected TestRestTemplate restTemplate = new TestRestTemplate();
 
   protected MockRestServiceServer mockServer;

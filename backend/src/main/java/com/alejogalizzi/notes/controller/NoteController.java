@@ -38,11 +38,6 @@ public class NoteController {
 
   }
 
-  @GetMapping("/categories")
-  public ResponseEntity<List<CategoryDTO>> getCategories() {
-    return ResponseEntity.ok(categoryService.findAll());
-  }
-
   @GetMapping("/filter-by-category/{categoryName}")
   public ResponseEntity<List<NoteDTO>> getActiveNotesByCategory(
       @PathVariable("categoryName") String categoryName,

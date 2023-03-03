@@ -33,7 +33,7 @@ public final class NoteMapper {
 
   public static NoteDTO getMapperFromNote(Note note) {
     return new NoteDTO(note.getId(), note.getName(), note.getContent(), note.isArchived(),
-        note.getCategories().stream().map(category -> new CategoryDTO(category.getName()))
+        note.getCategories().stream().map(category -> new CategoryDTO(category.getId(),category.getName(), category.getColor()))
             .collect(
                 Collectors.toList()), note.getUpdatedAt());
   }
@@ -41,7 +41,7 @@ public final class NoteMapper {
   public static List<NoteDTO> mapListToDTOs(List<Note> notes) {
     return notes.stream().map(
         note -> new NoteDTO(note.getId(), note.getName(), note.getContent(), note.isArchived(),
-            note.getCategories().stream().map(category -> new CategoryDTO(category.getName()))
+            note.getCategories().stream().map(category -> new CategoryDTO(category.getId(),category.getName(), category.getColor()))
                 .collect(
                     Collectors.toList()), note.getUpdatedAt())
     ).collect(Collectors.toList());

@@ -64,7 +64,7 @@ public class WebSecurityConfig {
         .and()
         .authorizeHttpRequests()
         .requestMatchers("/register", "/authenticate", "/validate-token").permitAll()
-        .requestMatchers("/notes/**").authenticated()
+        .requestMatchers("/notes/**", "/categories/**").authenticated()
         .and().exceptionHandling().authenticationEntryPoint(new JwtAuthenticationEntryPoint())
         .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()

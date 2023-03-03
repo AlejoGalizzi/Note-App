@@ -1,0 +1,125 @@
+import React, { useEffect, useState } from "react";
+import {
+  AppBar,
+  Box,
+  Grid,
+  Icon,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
+import { deleteCategory, getCategories } from "../../api/configRequest";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import { DeleteOutline } from "@mui/icons-material";
+import { Container } from "@mui/system";
+import MenuButton from "../menuButton/MenuButton";
+import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+
+const Categories = () => {
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState({});
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
+
+  const onHandleDelete = () => {
+    deleteCategory(selectedCategory.id).then(() => {
+      const actualCategories = categories.filter((category) => {
+        if (category.id === selectedCategory.id) {
+          return false;
+        } else {
+          return true;
+        }
+      });
+      setCategories(actualCategories);
+    });
+    setSelectedCategory(null);
+    setOpenDeleteModal(false);
+  };
+
+  const renderCategoriesAPI = () => {
+    getCategories()
+      .then((response) => setCategories(response.data))
+      .catch((error) => console.log(error));
+  };
+
+  useEffect(() => {
+    renderCategoriesAPI();
+  }, []);
+
+  const renderCategories = () => {
+    if (categories.length === 0) {
+      return (
+        <Grid item>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            flexDirection="column"
+          >
+            <Typography variant="h6" sx={{ flexGrow: 1, textAlign: "center" }}>
+              There is no categories here
+            </Typography>
+            <Icon fontSize="large">
+              <SentimentVeryDissatisfiedIcon fontSize="large" />
+            </Icon>
+          </Box>
+        </Grid>
+      );
+    }
+    return categories.map((category, index) => (
+      <ListItem
+        key={index}
+        secondaryAction={
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={() => {
+              setSelectedCategory(category);
+              setOpenDeleteModal(true);
+            }}
+          >
+            <DeleteOutline />
+          </IconButton>
+        }
+      >
+        <ListItemAvatar key={index}>
+          <BookmarkIcon
+            sx={{ color: category.color, backgroundColor: category }}
+            fontSize="large"
+          />
+        </ListItemAvatar>
+        <ListItemText primary={category.name} />
+      </ListItem>
+    ));
+  };
+
+  return (
+    <>
+      <Container>
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+                Categories
+              </Typography>
+              <MenuButton />
+            </Toolbar>
+          </AppBar>
+        </Box>
+        <List>{renderCategories()}</List>
+      </Container>
+      <ConfirmationModal
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+        handleConfirm={onHandleDelete}
+        setObject={setSelectedCategory}
+      />
+    </>
+  );
+};
+
+export default Categories;

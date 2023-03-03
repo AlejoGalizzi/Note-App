@@ -125,7 +125,7 @@ const ArchivedNotes = () => {
         open={openDeleteModal}
         setOpen={setOpenDeleteModal}
         handleConfirm={onHandleDelete}
-        setNote={setSelectedNote}
+        setObject={setSelectedNote}
       />
     </>
   );

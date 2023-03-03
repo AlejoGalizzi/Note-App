@@ -2,7 +2,7 @@ import axios from "axios";
 
 const token = localStorage.getItem("token");
 
-const { REACT_APP_BACKEND_URL } = process.env;
+const REACT_APP_BACKEND_URL  ="http://localhost:8080";
 
 const headers = {
   withCredentials: true,
@@ -25,7 +25,7 @@ export const getArchiveNotes = () => {
 }
 
 export const getCategories = () => {
-  return axios.get(`${REACT_APP_BACKEND_URL}/notes/categories`, headers);
+  return axios.get(`${REACT_APP_BACKEND_URL}/categories`, headers);
 };
 
 export const getActiveNotesByCategoryName = (categoryName) => {
@@ -59,13 +59,20 @@ export const deleteNote = (id) => {
   return axios.delete(`${REACT_APP_BACKEND_URL}/notes/${id}`, headers);
 };
 
-export const createCategory = (categoryName) => {
+export const createCategory = (category) => {
   return axios.post(
-    `${REACT_APP_BACKEND_URL}/notes/add-category`,
-    { name: categoryName },
+    `${REACT_APP_BACKEND_URL}/categories`,
+    category,
     headers
   );
 };
+
+export const deleteCategory = (id) => {
+  return axios.delete(
+    `${REACT_APP_BACKEND_URL}/categories/${id}`,
+    headers
+  )
+}
 
 export const changeStatus = (id) => {
   return axios.post(
