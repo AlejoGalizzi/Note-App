@@ -4,7 +4,7 @@ import { Button, Menu, MenuItem, Typography } from "@mui/material";
 import DensityMediumIcon from "@mui/icons-material/DensityMedium";
 import { Link } from "react-router-dom";
 
-const MenuButton = (linkObject = () => {}) => {
+const MenuButton = ({linkObject = () => {}}) => {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
@@ -55,7 +55,7 @@ const MenuButton = (linkObject = () => {}) => {
             </Button>
           </Link>
         </MenuItem>
-        <MenuItem>{linkObject}</MenuItem>
+        {linkObject !== undefined ? <MenuItem>{linkObject()}</MenuItem> : null}
         <MenuItem>
           <Button
             id="fade-button"

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Button,
@@ -9,7 +8,6 @@ import {
   Grid,
   Icon,
   InputLabel,
-  Menu,
   MenuItem,
   Select,
   Toolbar,
@@ -18,7 +16,7 @@ import {
 import { Box, Container } from "@mui/system";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import DensityMediumIcon from "@mui/icons-material/DensityMedium";
+import MenuButton from "../menuButton/MenuButton";
 
 const NotesList = ({
   notes,
@@ -30,24 +28,9 @@ const NotesList = ({
   linkObject = () => {},
   setOpen = () => {},
 }) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const navigate = useNavigate();
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
 
   const handleClickAdd = () => {
     setOpen(true);
-  }
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogOut = () => {
-    localStorage.removeItem('token');
-    navigate("/login");
   }
 
   const renderNotes = () => {
@@ -122,56 +105,7 @@ const NotesList = ({
                 Add note
               </Button>
             )}
-            <Button
-              id="basic-button"
-              aria-controls={open ? "basic-menu" : undefined}
-              aria-haspopup="true"
-              aria-expanded={open ? "true" : undefined}
-              onClick={handleClick}
-              sx={{ color: "white" }}
-            >
-              <DensityMediumIcon color="white" />
-            </Button>
-
-            <Menu
-              id="basic-menu"
-              anchorEl={anchorEl}
-              open={open}
-              onClose={handleClose}
-              MenuListProps={{
-                "aria-labelledby": "basic-button",
-              }}
-            >
-              <MenuItem>
-                <Link to="/home">
-                  <Button
-                    id="fade-button"
-                    aria-controls={true ? "fade-menu" : undefined}
-                    aria-haspopup="true"
-                    aria-expanded={true ? "true" : undefined}
-                    onClick={() => {}}
-                  >
-                    <Typography variant="p" component="p" color="black">
-                      HOME
-                    </Typography>
-                  </Button>
-                </Link>
-              </MenuItem>
-              <MenuItem>{linkObject()}</MenuItem>
-              <MenuItem>
-                <Button
-                  id="fade-button"
-                  aria-controls={true ? "fade-menu" : undefined}
-                  aria-haspopup="true"
-                  aria-expanded={true ? "true" : undefined}
-                  onClick={handleLogOut}
-                >
-                  <Typography variant="p" component="p" color="black">
-                    Log Out
-                  </Typography>
-                </Button>
-              </MenuItem>
-            </Menu>
+            <MenuButton linkObject={linkObject}/>
           </Toolbar>
         </AppBar>
       </Box>
