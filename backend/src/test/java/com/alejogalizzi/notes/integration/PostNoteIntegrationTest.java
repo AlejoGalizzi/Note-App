@@ -52,11 +52,7 @@ public class PostNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
   public void setUp() {
     createTokenHeader();
     user = new User(1L, USERNAME, PASSWORD);
-    category1 = new Category(1L, CATEGORY_NAME_1, Date.from(
-        Instant.now()));
-    Category category2 = new Category(1L, CATEGORY_NAME_2, Date.from(
-        Instant.now()));
-    Category category3 = new Category(1L, CATEGORY_NAME_3, Date.from(
+    category1 = new Category(1L, CATEGORY_NAME_1,"#808080" , Date.from(
         Instant.now()));
     note1 = new Note(1L, NOTE_NAME_1, CONTENT_1, false,
         Collections.singletonList(category1), Date.from(Instant.now()), Date.from(Instant.now()));
@@ -68,7 +64,7 @@ public class PostNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
     when(userRepository.findByUsername(USERNAME)).thenReturn(user);
 
     HttpEntity<NoteDTO> request = new HttpEntity<>(
-        createRequest(NOTE_NAME_1, CONTENT_1, Arrays.asList(new CategoryDTO(CATEGORY_NAME_1))),
+        createRequest(NOTE_NAME_1, CONTENT_1, Arrays.asList(new CategoryDTO(1L, CATEGORY_NAME_1, CATEGORY_COLOR))),
         headers);
 
     ResponseEntity<Void> response = restTemplate.exchange(createURLWithPort(NOTE_PATH),
@@ -82,7 +78,7 @@ public class PostNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
     when(noteRepository.save(any(Note.class))).thenReturn(note1);
     when(userRepository.findByUsername(USERNAME)).thenReturn(user);
     HttpEntity<NoteDTO> request = new HttpEntity<>(
-        createRequest(null, CONTENT_1, List.of(new CategoryDTO(CATEGORY_NAME_1))), headers);
+        createRequest(null, CONTENT_1, List.of(new CategoryDTO(1L, CATEGORY_NAME_1, CATEGORY_COLOR))), headers);
 
     ResponseEntity<ErrorResponse> response = restTemplate.exchange(createURLWithPort(NOTE_PATH),
         HttpMethod.POST, request, ErrorResponse.class);
@@ -97,7 +93,7 @@ public class PostNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
     when(noteRepository.save(any(Note.class))).thenReturn(note1);
     when(userRepository.findByUsername(USERNAME)).thenReturn(user);
     HttpEntity<NoteDTO> request = new HttpEntity<>(
-        createRequest(null, null, List.of(new CategoryDTO(CATEGORY_NAME_1))), headers);
+        createRequest(null, null, List.of(new CategoryDTO(1L, CATEGORY_NAME_1, CATEGORY_COLOR))), headers);
 
     ResponseEntity<ErrorResponse> response = restTemplate.exchange(createURLWithPort(NOTE_PATH),
         HttpMethod.POST, request, ErrorResponse.class);
@@ -111,7 +107,7 @@ public class PostNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
   public void shouldCreateCategory() {
     when(categoryRepository.save(any(Category.class))).thenReturn(category1);
     when(userRepository.findByUsername(USERNAME)).thenReturn(user);
-    HttpEntity<CategoryDTO> request = new HttpEntity<>(new CategoryDTO(CATEGORY_NAME_1), headers);
+    HttpEntity<CategoryDTO> request = new HttpEntity<>(new CategoryDTO(1L, CATEGORY_NAME_1, CATEGORY_COLOR), headers);
 
     ResponseEntity<Void> response = restTemplate.exchange(createURLWithPort(CATEGORY_ADD),
         HttpMethod.POST, request, Void.class);
@@ -123,7 +119,7 @@ public class PostNoteIntegrationTest extends AbstractBaseNoteIntegrationTest {
   public void shouldNotCreateCategoryWhenSendEmptyName() {
     when(categoryRepository.save(any(Category.class))).thenReturn(category1);
     when(userRepository.findByUsername(USERNAME)).thenReturn(user);
-    HttpEntity<CategoryDTO> request = new HttpEntity<>(new CategoryDTO(null), headers);
+    HttpEntity<CategoryDTO> request = new HttpEntity<>(new CategoryDTO(1L, null, CATEGORY_COLOR), headers);
 
     ResponseEntity<ErrorResponse> response = restTemplate.exchange(createURLWithPort(CATEGORY_ADD),
         HttpMethod.POST, request, ErrorResponse.class);

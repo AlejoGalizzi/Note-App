@@ -11,7 +11,11 @@ import lombok.NoArgsConstructor;
 public final class CategoryMapper {
 
   public static List<CategoryDTO> mapListToDTOs(List<Category> categories) {
-    return categories.stream().map(category -> new CategoryDTO(category.getName())
+    return categories.stream().map(category -> new CategoryDTO(category.getId(),category.getName(), category.getColor())
     ).collect(Collectors.toList());
+  }
+
+  public static CategoryDTO entityToDTO(Category category) {
+    return new CategoryDTO(category.getId(), category.getName(), category.getColor());
   }
 }

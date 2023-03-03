@@ -9,8 +9,10 @@ import {
   FormControlLabel,
   FormGroup,
   TextField,
+  InputAdornment,
 } from "@mui/material";
-import { Controller, useForm, useFormContext } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import { ColorPicker } from "material-ui-color";
 
 const Form = ({
   data = {
@@ -26,20 +28,21 @@ const Form = ({
   allCategories = [],
   setSelectedNote = () => {},
   onClickAddCategory = () => {},
-  errorsSystem = {}
+  errorsSystem = {},
 }) => {
   const [formData, setFormData] = useState(data);
   const [newCategory, setNewCategory] = useState("");
+  const [newColor, setNewColor] = useState("#808080");
   const { errors, clearErrors } = errorsSystem;
 
-  const { register, control, handleSubmit, watch } = useForm({
+  const { register, handleSubmit, watch } = useForm({
     defaultValues: {
       id: formData.id,
       name: formData.name,
       content: formData.content,
       categories: formData.categories,
-      updatedAt: formData.updatedAt
-    }
+      updatedAt: formData.updatedAt,
+    },
   });
 
   const handleChange = (event) => {
@@ -49,9 +52,11 @@ const Form = ({
       let newCategories = formData.categories;
 
       if (checkedValue) {
-        newCategories = [...newCategories, {name: categoryValue}];
+        newCategories = [...newCategories, { name: categoryValue }];
       } else {
-        newCategories = newCategories.filter((category) => category.name !== categoryValue);
+        newCategories = newCategories.filter(
+          (category) => category.name !== categoryValue
+        );
       }
 
       setFormData({ ...formData, categories: newCategories });
@@ -59,9 +64,18 @@ const Form = ({
       setFormData({ ...formData, [event.target.name]: event.target.value });
     }
   };
-  
+
   const handleFormSubmit = (formData) => {
     onSubmit(formData);
+  };
+
+  const handleCategorySubmit = () => {
+    onClickAddCategory({ name: newCategory, color: newColor });
+    if (!errors["category"]) {
+      setNewColor("#808080");
+      setNewCategory("");
+      clearErrors("category");
+    }
   }
 
   const handleClose = () => {
@@ -79,11 +93,9 @@ const Form = ({
             checked={formData.categories.some(
               (cat) => cat.hasOwnProperty("name") && cat.name === category.name
             )}
-            // checked={watch(category.name)}
             value={category.name}
-            // onChange={handleChange}
             name={category.name}
-            {...register('categories', {onChange: handleChange})}
+            {...register("categories", { onChange: handleChange })}
           />
         }
         label={category.name}
@@ -109,13 +121,15 @@ const Form = ({
             label="Name"
             type="text"
             fullWidth
-            value={watch('name') || ''}
+            value={watch("name") || ""}
             onChange={handleChange}
-            {...register('name')}
-            helperText={errors && errors["name"] ? errors["name"].message : null}
+            {...register("name")}
+            helperText={
+              errors && errors["name"] ? errors["name"].message : null
+            }
           />
           <TextField
-            error={errors && errors['content'] ? true : false}
+            error={errors && errors["content"] ? true : false}
             margin="dense"
             // name="content"
             label="Content"
@@ -123,32 +137,49 @@ const Form = ({
             rows={7}
             multiline
             fullWidth
-            value={watch('content') || ''}
+            value={watch("content") || ""}
             onChange={handleChange}
             size="medium"
-            helperText={errors && errors["content"] ? errors["content"].message : null}
-            {...register('content')}
+            helperText={
+              errors && errors["content"] ? errors["content"].message : null
+            }
+            {...register("content")}
           />
           <FormGroup>{renderCheckboxes()}</FormGroup>
           <TextField
-            error={errors && errors['add-category'] ? true : false}
+            error={errors && errors["category"] ? true : false}
             margin="dense"
-            name="add-category"
+            name="category"
             label="Add Category"
             type="text"
             fullWidth
             value={newCategory}
             onChange={(event) => setNewCategory(event.target.value)}
             size="medium"
-            helperText={errors && errors["add-category"] ? errors["add-category"].message : null}
-          />
-          <Button color="primary" variant="contained" onClick={() => {
-            onClickAddCategory(newCategory)
-            if(!errors['add-category']){
-              setNewCategory('');
-              clearErrors('add-category');
+            helperText={
+              errors && errors["category"] ? errors["category"].message : null
             }
-            }}>Add Category</Button>
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <ColorPicker
+                    defaultValue={"gray"}
+                    value={newColor}
+                    onChange={(color) => setNewColor(color.css.backgroundColor)}
+                    disableTextfield
+                    hideTextfield
+                  />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleCategorySubmit}
+          >
+            Add Category
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="primary">

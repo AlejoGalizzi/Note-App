@@ -7,6 +7,7 @@ import Home from "./components/home/Home";
 // import { withAuth } from "./util/withAuth";
 import SignUp from "./components/signUp/SignUp";
 import ProtectedRoutes from "./components/protectedRoutes/ProtectedRoutes";
+import Categories from "./components/categories/Categories";
 
 export const App = () => (
   <BrowserRouter>
@@ -18,6 +19,7 @@ export const App = () => (
         <Route path="/home" element={<Home />}></Route>
         <Route path="/activeNotes" element={<ActiveNotes />}></Route>
         <Route path="/archiveNotes" element={<ArchivedNotes />}></Route>
+        <Route path="/categories" element={<Categories/>}></Route>
       </Route>
       <Route path="/login" element={<LogIn />}></Route>
       <Route path="/signUp" element={<SignUp />}></Route>
