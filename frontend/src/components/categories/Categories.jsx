@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import {
+  AppBar,
   Box,
   Grid,
   Icon,
   IconButton,
+  List,
   ListItem,
   ListItemAvatar,
   ListItemText,
+  Toolbar,
   Typography,
 } from "@mui/material";
 import { deleteCategory, getCategories } from "../../api/configRequest";
@@ -14,6 +17,8 @@ import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDiss
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { DeleteOutline } from "@mui/icons-material";
 import { Container } from "@mui/system";
+import MenuButton from "../menuButton/MenuButton";
+import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
