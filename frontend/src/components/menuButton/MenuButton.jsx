@@ -55,7 +55,7 @@ const MenuButton = ({linkObject = () => {}}) => {
             </Button>
           </Link>
         </MenuItem>
-        {linkObject !== undefined ? <MenuItem>{linkObject()}</MenuItem> : null}
+        {linkObject && <MenuItem>{linkObject()}</MenuItem>}
         <MenuItem>
           <Button
             id="fade-button"

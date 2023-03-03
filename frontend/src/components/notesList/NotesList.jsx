@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   AppBar,
   Button,
@@ -28,10 +28,9 @@ const NotesList = ({
   linkObject = () => {},
   setOpen = () => {},
 }) => {
-
   const handleClickAdd = () => {
     setOpen(true);
-  }
+  };
 
   const renderNotes = () => {
     if (notes.length === 0) {
@@ -86,9 +85,15 @@ const NotesList = ({
 
   const renderOptions = () => {
     const categoriesItem = categories.map((category, index) => (
-      <MenuItem value={category.name} key={index}>{category.name}</MenuItem>
+      <MenuItem value={category.name} key={index}>
+        {category.name}
+      </MenuItem>
     ));
-    categoriesItem.unshift(<MenuItem value={"All"} key={-1}>All</MenuItem>);
+    categoriesItem.unshift(
+      <MenuItem value={"All"} key={-1}>
+        All
+      </MenuItem>
+    );
     return categoriesItem;
   };
 
@@ -105,7 +110,7 @@ const NotesList = ({
                 Add note
               </Button>
             )}
-            <MenuButton linkObject={linkObject}/>
+            <MenuButton linkObject={linkObject} />
           </Toolbar>
         </AppBar>
       </Box>

@@ -1,33 +1,30 @@
 import React, { useEffect, useState } from "react";
-import { AppBar, Avatar, Box, Button, Grid, Icon, IconButton, List, ListItem, ListItemAvatar, ListItemText, Menu, MenuItem, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Grid,
+  Icon,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { deleteCategory, getCategories } from "../../api/configRequest";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
-import DensityMediumIcon from "@mui/icons-material/DensityMedium";
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { DeleteOutline } from "@mui/icons-material";
 import { Container } from "@mui/system";
-import { Link, useNavigate } from "react-router-dom";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
 import MenuButton from "../menuButton/MenuButton";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState({})
-  const [ openDeleteModal, setOpenDeleteModal ] = useState(false);
-  const navigate = useNavigate();
-  const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handleLogOut = () => {
-    localStorage.removeItem('token');
-    navigate("/login");
-  }
+  const [selectedCategory, setSelectedCategory] = useState({});
+  const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
   const onHandleDelete = () => {
     deleteCategory(selectedCategory.id).then(() => {
@@ -42,7 +39,7 @@ const Categories = () => {
     });
     setSelectedCategory(null);
     setOpenDeleteModal(false);
-  }
+  };
 
   const renderCategoriesAPI = () => {
     getCategories()
@@ -51,7 +48,7 @@ const Categories = () => {
   };
 
   useEffect(() => {
-    renderCategoriesAPI()
+    renderCategoriesAPI();
   }, []);
 
   const renderCategories = () => {
@@ -78,42 +75,52 @@ const Categories = () => {
       <ListItem
         key={index}
         secondaryAction={
-          <IconButton edge="end" aria-label="delete" onClick={() => {
-            setSelectedCategory(category);
-            setOpenDeleteModal(true);
-          }}>
+          <IconButton
+            edge="end"
+            aria-label="delete"
+            onClick={() => {
+              setSelectedCategory(category);
+              setOpenDeleteModal(true);
+            }}
+          >
             <DeleteOutline />
           </IconButton>
         }
       >
         <ListItemAvatar key={index}>
-            <BookmarkIcon sx={{ color: category.color, backgroundColor: category }} fontSize="large"/>
+          <BookmarkIcon
+            sx={{ color: category.color, backgroundColor: category }}
+            fontSize="large"
+          />
         </ListItemAvatar>
         <ListItemText primary={category.name} />
       </ListItem>
     ));
   };
 
-  return <><Container>
-      <Box sx={{ flexGrow: 1 }}>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
-              Categories
-            </Typography>
-            <MenuButton/>
-          </Toolbar>
-        </AppBar>
-      </Box>
-      <List >{renderCategories()}</List>
-    </Container>
-    <ConfirmationModal
-      open={openDeleteModal}
-      setOpen={setOpenDeleteModal}
-      handleConfirm={onHandleDelete}
-      setObject={setSelectedCategory}
-    />
-    </>;
+  return (
+    <>
+      <Container>
+        <Box sx={{ flexGrow: 1 }}>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
+                Categories
+              </Typography>
+              <MenuButton />
+            </Toolbar>
+          </AppBar>
+        </Box>
+        <List>{renderCategories()}</List>
+      </Container>
+      <ConfirmationModal
+        open={openDeleteModal}
+        setOpen={setOpenDeleteModal}
+        handleConfirm={onHandleDelete}
+        setObject={setSelectedCategory}
+      />
+    </>
+  );
 };
 
 export default Categories;
