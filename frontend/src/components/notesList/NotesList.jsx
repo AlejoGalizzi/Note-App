@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Button,
@@ -17,23 +17,44 @@ import { Box, Container } from "@mui/system";
 import AssignmentRoundedIcon from "@mui/icons-material/AssignmentRounded";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import MenuButton from "../menuButton/MenuButton";
+import SearchBar from "../searchBar";
 
 const NotesList = ({
   notes,
   title,
   categories,
-  handleChange,
-  currentCategory,
   renderActions,
   linkObject = () => {},
   setOpen = () => {},
 }) => {
+  const [filteredNotes, setFilteredNotes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchOption, setSearchOption] = useState("name");
+
+  const handleSearch = () => {
+    let filtered = notes;
+    if (searchOption === "name") {
+      filtered = notes.filter((note) =>
+        note.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } else if (searchOption === "content") {
+      filtered = notes.filter((note) =>
+        note.content.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } else if (searchOption === "category") {
+      filtered = notes.filter((note) =>
+        note.categories.some((category) => category.name === searchTerm)
+      );
+    }
+    setFilteredNotes(filtered);
+  };
+
   const handleClickAdd = () => {
     setOpen(true);
   };
 
   const renderNotes = () => {
-    if (notes.length === 0) {
+    if (filteredNotes.length === 0) {
       return (
         <Grid item>
           <Box
@@ -52,8 +73,7 @@ const NotesList = ({
         </Grid>
       );
     }
-
-    return notes.map((note, index) => (
+    return filteredNotes.map((note, index) => (
       <Grid item xs={7} sm={6} md={4} lg={4} key={index}>
         <Box
           sx={{
@@ -83,19 +103,25 @@ const NotesList = ({
     ));
   };
 
-  const renderOptions = () => {
-    const categoriesItem = categories.map((category, index) => (
-      <MenuItem value={category.name} key={index}>
-        {category.name}
-      </MenuItem>
-    ));
-    categoriesItem.unshift(
-      <MenuItem value={"All"} key={-1}>
-        All
-      </MenuItem>
-    );
-    return categoriesItem;
-  };
+  useEffect(() => {
+    let filteredNotes = notes;
+  
+    if (searchOption === "name") {
+      filteredNotes = notes.filter((note) =>
+        note.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } else if (searchOption === "content") {
+      filteredNotes = notes.filter((note) =>
+        note.content.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    } else if (searchOption === "category" && searchTerm !== "") {
+      filteredNotes = notes.filter((note) =>
+        note.categories.some((category) => category.name === searchTerm)
+      );
+    }
+  
+    setFilteredNotes(filteredNotes);
+  }, [notes,searchTerm, searchOption]); 
 
   return (
     <Container>
@@ -114,23 +140,14 @@ const NotesList = ({
           </Toolbar>
         </AppBar>
       </Box>
-      <FormControl
-        fullWidth
-        style={{
-          marginTop: "20px",
-        }}
-      >
-        <InputLabel htmlFor="category-input">Category filter:</InputLabel>
-        <Select
-          labelId="category-input"
-          id="category-input"
-          value={currentCategory}
-          label="categoryName"
-          onChange={handleChange}
-        >
-          {renderOptions()}
-        </Select>
-      </FormControl>
+      <SearchBar
+        onSearch={handleSearch}
+        categories={categories}
+        searchTerm = {searchTerm}
+        setSearchTerm = {setSearchTerm}
+        searchOption = {searchOption}
+        setSearchOption = {setSearchOption}
+      />
       <Container>
         <Grid
           container
