@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { FormProvider, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { Button, CardActions, IconButton, Typography } from "@mui/material";
 import NotesList from "../notesList/NotesList";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
@@ -27,6 +27,12 @@ const ActiveNotes = () => {
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
   const [selectedNote, setSelectedNote] = useState(null);
   const { setError, formState: { errors }, clearErrors } = useForm();
+
+  const mapStringsToCategories = (categories) => {
+    return categories.map((category) => 
+      {return { name: category }}
+    )
+  }
 
   const style = { whiteSpace: "normal", wordWrap: "break-word" };
 
@@ -116,6 +122,8 @@ const ActiveNotes = () => {
   };
 
   const onHandleSubmit = (formData) => {
+    const DBCategories = mapStringsToCategories(formData.categories);
+    formData.categories = DBCategories;
     updateNote(formData, formData.id).then(() => {
       const actualNotes = notes.map((note) => {
         if (note.id === formData.id) {
@@ -134,6 +142,8 @@ const ActiveNotes = () => {
   };
 
   const handleSubmitCreation = (data) => {
+    const DBCategories = mapStringsToCategories(data.categories);
+    data.categories = DBCategories;
     createNote(data).then(() => {
       setNotes([...notes,data]);
       clearErrors();
