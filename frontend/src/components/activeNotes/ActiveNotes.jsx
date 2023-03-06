@@ -78,17 +78,17 @@ const ActiveNotes = () => {
   };
 
   const onClickAddCategory = (newCategory) => {
-    createCategory(newCategory).then(() => {
-      setCategories([...categories, { name: newCategory.name, color: newCategory.color }]);
+    createCategory(newCategory).then(((response) => {
+      setCategories([...categories, response.data]);
     }).catch(error => {
       const {status, messages} = error.response.data;
       if(status === 422) {
         for(let field in messages) {
           setError('category', {message: messages[field]});
         }
-      console.log("Errors: ", errors)
+      console.log("Errors: ", errors);
       }
-    });
+    }));
   };
 
   const onOpenDeleteModal = (id) => {
@@ -134,7 +134,6 @@ const ActiveNotes = () => {
   };
 
   const handleSubmitCreation = (data) => {
-    console.log(data);
     createNote(data).then(() => {
       setNotes([...notes,data]);
       clearErrors();

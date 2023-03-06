@@ -13,7 +13,7 @@ public interface ICategoryService {
 
   Optional<CategoryDTO> findById(long id);
 
-  void save(CategoryDTO categoryDTO);
+  CategoryDTO save(CategoryDTO categoryDTO);
 
   void deleteById(long id);
 

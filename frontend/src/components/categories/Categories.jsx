@@ -2,26 +2,33 @@ import React, { useEffect, useState } from "react";
 import {
   AppBar,
   Box,
+  Button,
   Grid,
   Icon,
   IconButton,
+  InputAdornment,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
+  TextField,
   Toolbar,
   Typography,
 } from "@mui/material";
-import { deleteCategory, getCategories } from "../../api/configRequest";
+import { deleteCategory, getCategories, createCategory } from "../../api/configRequest";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import { DeleteOutline } from "@mui/icons-material";
 import { Container } from "@mui/system";
 import MenuButton from "../menuButton/MenuButton";
 import ConfirmationModal from "../confirmationModal/ConfirmationModal";
+import { ColorPicker } from "material-ui-color";
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
+  const [newCategory, setNewCategory] = useState("");
+  const [newColor, setNewColor] = useState("#808080");
+  const [error, setError] = useState(null)
   const [selectedCategory, setSelectedCategory] = useState({});
   const [openDeleteModal, setOpenDeleteModal] = useState(false);
 
@@ -39,6 +46,22 @@ const Categories = () => {
     setSelectedCategory(null);
     setOpenDeleteModal(false);
   };
+
+  const handleCategorySubmit = () => {
+    createCategory({name: newCategory, color: newColor}).then((response) => {
+      setCategories([...categories, response.data]);
+      setError(null);
+      setNewCategory("");
+    }).catch(error => {
+      const {status, messages} = error.response.data;
+      if(status === 422) {
+        const message = messages[Object.keys(messages)[0]]
+        if(messages.length !== 0) {
+          setError({name: 'category', message: message});
+        }
+      }
+    })
+  }
 
   const renderCategoriesAPI = () => {
     getCategories()
@@ -110,6 +133,40 @@ const Categories = () => {
             </Toolbar>
           </AppBar>
         </Box>
+        <TextField
+            error={error ? true : false}
+            margin="dense"
+            name="category"
+            label="Add Category"
+            type="text"
+            fullWidth
+            value={newCategory}
+            onChange={(event) => setNewCategory(event.target.value)}
+            size="medium"
+            helperText={
+              error ? error.message : null
+            }
+            InputProps={{
+              endAdornment: (
+                <InputAdornment position="end">
+                  <ColorPicker
+                    defaultValue={"gray"}
+                    value={newColor}
+                    onChange={(event) => setNewColor(event.css.backgroundColor)}
+                    disableTextfield
+                    hideTextfield
+                  />
+                </InputAdornment>
+              ),
+            }}
+          />
+          <Button
+            color="primary"
+            variant="contained"
+            onClick={handleCategorySubmit}
+          >
+            Add Category
+          </Button>
         <List>{renderCategories()}</List>
       </Container>
       <ConfirmationModal
