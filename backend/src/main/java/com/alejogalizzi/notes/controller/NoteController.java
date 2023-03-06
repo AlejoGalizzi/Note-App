@@ -6,7 +6,6 @@ import com.alejogalizzi.notes.service.abstraction.ICategoryService;
 import com.alejogalizzi.notes.service.abstraction.INoteService;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
