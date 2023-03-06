@@ -63,7 +63,6 @@ const ArchivedNotes = () => {
   };
 
   const onHandleDelete = () => {
-    console.log(selectedNote.id);
     deleteNote(selectedNote.id)
       .then(() => {
         const actualNotes = notes.filter((note) => {

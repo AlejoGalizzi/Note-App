@@ -39,14 +39,14 @@ public class CategoryService implements ICategoryService {
   }
 
   @Override
-  public void save(CategoryDTO categoryDTO) {
+  public CategoryDTO save(CategoryDTO categoryDTO) {
     if(categoryRepository.existsByName(categoryDTO.getName())) {
       throw new AlreadyRegister("Category already registered");
     }
     Category category = new Category();
     category.setName(categoryDTO.getName());
     category.setColor(categoryDTO.getColor());
-    categoryRepository.save(category);
+    return CategoryMapper.entityToDTO(categoryRepository.save(category));
   }
 
   @Override

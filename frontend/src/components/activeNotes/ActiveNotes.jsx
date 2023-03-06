@@ -134,7 +134,6 @@ const ActiveNotes = () => {
   };
 
   const handleSubmitCreation = (data) => {
-    console.log(data);
     createNote(data).then(() => {
       setNotes([...notes,data]);
       clearErrors();
